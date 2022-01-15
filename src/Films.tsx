@@ -20,7 +20,7 @@ const Films = () => {
   }
 
   if (films.error) {
-    return <div>{films.error}</div>
+    return <div>ERROR: {films.error.message}</div>
   }
 
   return (

@@ -1,6 +1,7 @@
 {
   "name": "dvdrental-react",
-  "version": "0.1.0",
+  "description": "Gain some familiarity with Hasura",
+  "version": "0.0.1",
   "private": true,
   "dependencies": {
     "@apollo/client": "^3.5.7",
