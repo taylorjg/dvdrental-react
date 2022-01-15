@@ -1,5 +1,7 @@
+import { useEffect } from "react"
 import { gql, useQuery } from "@apollo/client"
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material"
+import { useToast } from "./useToast"
 
 const GQL_FILMS_QUERY = gql`
   query Films {
@@ -13,35 +15,45 @@ const GQL_FILMS_QUERY = gql`
 
 const Films = () => {
 
-  const films = useQuery(GQL_FILMS_QUERY)
+  const queryResult = useQuery(GQL_FILMS_QUERY)
+  const films = queryResult.data?.film ?? []
 
-  if (films.loading) {
-    return <div>Loading films...</div>
-  }
+  const toast = useToast()
 
-  if (films.error) {
-    return <div>ERROR: {films.error.message}</div>
-  }
+  useEffect(() => {
+    if (queryResult.loading) {
+      toast.showInfo("Loading films...")
+      return
+    }
+    if (queryResult.error) {
+      toast.showError(queryResult.error.message)
+      return
+    }
+    toast.clear()
+  }, [queryResult]) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <TableContainer>
-      <Table size="small">
-        <TableHead>
-          <TableRow>
-            <TableCell>Title</TableCell>
-            <TableCell>Release Year</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {films.data.film.map((film: any) => (
-            <TableRow key={film.film_id}>
-              <TableCell>{film.title}</TableCell>
-              <TableCell>{film.release_year}</TableCell>
+    <>
+      <TableContainer>
+        <Table size="small">
+          <TableHead>
+            <TableRow>
+              <TableCell>Title</TableCell>
+              <TableCell>Release Year</TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+          </TableHead>
+          <TableBody>
+            {films.map((film: any) => (
+              <TableRow key={film.film_id}>
+                <TableCell>{film.title}</TableCell>
+                <TableCell>{film.release_year}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      {toast.renderToast()}
+    </>
   )
 }
 
