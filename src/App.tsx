@@ -1,9 +1,12 @@
+import { Container } from "@mui/material"
 import Films from "./Films"
 import "./App.css"
 
 const App = () => {
   return (
-    <Films />
+    <Container maxWidth="sm">
+      <Films />
+    </Container>
   )
 }
 

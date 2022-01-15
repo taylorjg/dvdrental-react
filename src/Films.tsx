@@ -1,4 +1,5 @@
 import { gql, useQuery } from "@apollo/client"
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material"
 
 const GQL_FILMS_QUERY = gql`
   query Films {
@@ -23,22 +24,24 @@ const Films = () => {
   }
 
   return (
-    <table>
-      <thead>
-        <tr>
-          <th>Title</th>
-          <th>Release Year</th>
-        </tr>
-      </thead>
-      <tbody>
-        {films.data.film.map((film: any) => (
-          <tr key={film.film_id}>
-            <td>{film.title}</td>
-            <td>{film.release_year}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    <TableContainer>
+      <Table size="small">
+        <TableHead>
+          <TableRow>
+            <TableCell>Title</TableCell>
+            <TableCell>Release Year</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {films.data.film.map((film: any) => (
+            <TableRow key={film.film_id}>
+              <TableCell>{film.title}</TableCell>
+              <TableCell>{film.release_year}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
   )
 }
 
